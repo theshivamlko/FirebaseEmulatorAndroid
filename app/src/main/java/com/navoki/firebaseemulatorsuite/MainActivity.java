@@ -1,17 +1,19 @@
 package com.navoki.firebaseemulatorsuite;
 
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
-import android.view.Menu;
-import android.view.MenuItem;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +28,20 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                        //.setHost("10.0.2.2:8080")
+                      //  .setSslEnabled(false)
+                        .setPersistenceEnabled(false)
+                        .build();
+
+                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                firestore.setFirestoreSettings(settings);
+
+                Map<String, String> map = new HashMap<>();
+                map.put("name", "Shivam");
+                map.put("job", "Developer");
+
+                firestore.collection("user").add(map);
             }
         });
     }
